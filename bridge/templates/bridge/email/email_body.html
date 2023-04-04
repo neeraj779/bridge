@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>File Saved Successfully</title>
+</head>
+<body>
+    <h1>File Saved Successfully</h1>
+    <p>Dear {{ user.username }},</p>
+    <p>Your file {{ fileName }} has been saved successfully at {{ fileDestination }}.</p>
+    <table>
+        <tr>
+            <th>File Name:</th>
+            <td>{{ fileName }}</td>
+        </tr>
+        <tr>
+            <th>Tool: </th>
+            <td>{{ tool }}</td>
+        </tr>
+        <tr>
+            <th>File Owner:</th>
+            <td>{{ fileOwner.username }}</td>
+        </tr>
+        <tr>
+            <th>No. of Pages:</th>
+            <td>{{ noOfPages }}</td>
+        </tr>
+        <tr>
+            <th>Date and Time:</th>
+            <td>{{ dateTime }}</td>
+        </tr>
+    </table>
+    <p>Thank you for using our service.</p>
+</body>
+</html>
