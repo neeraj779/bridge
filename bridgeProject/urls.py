@@ -24,3 +24,7 @@ urlpatterns = [
     path('bridge/auth/', include('authentication.urls')),
     path('bridge/accounts/', include("django.contrib.auth.urls")),
 ]
+
+# error handler for 404 and 500
+handler404 = 'bridge.views.error_404'
+handler500 = 'bridge.views.error_500'

@@ -16,6 +16,15 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 
+# Custom error pages
+def error_404(request, exception):
+    return render(request, 'bridge/404.html')
+
+
+def error_500(request):
+    return render(request, 'bridge/500.html')
+
+
 def landingPage(request):
     return render(request, 'bridge/landingPage.html')
 
