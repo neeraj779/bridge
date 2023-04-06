@@ -1,0 +1,143 @@
+{% block styleContent %} {% load static %}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+/>
+<link rel="stylesheet" href="{% static 'authentication/css/auth.css' %}" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+  rel="stylesheet"
+/>
+{% endblock styleContent %} {% block bodycontent %}
+
+<div class="mobile">
+  <h1 class="title cont-title">Welcome to bridge</h1>
+</div>
+
+<section
+  class="side"
+  style="
+    background: url({%static 'authentication/img/bk.png'%}) no-repeat;
+    background-size: 100% 102%;
+  "
+>
+  <div class="login-container">
+    <p class="cont-title">Welcome to bridge</p>
+
+    <h2 style="color: aliceblue">Breaking Barriers to Communication.</h2>
+    <h3>
+      <p
+        href=""
+        class="typewrite"
+        data-period="2000"
+        data-type='["Bridging the communication gap, one conversation at a time.", "Connecting people through technology and innovation.", "Helping you see beyond the words."]'
+        style="position: absolute"
+      >
+        <span class="wrap"></span>
+      </p>
+    </h3>
+  </div>
+</section>
+
+<section class="main">
+  <div class="login-container">
+    {% if messages %}
+
+    <ul class="messages">
+      {% for message in messages %}
+      <div
+        class="alert alert-{{message.tags}}"
+        style="margin-top: 50px"
+        role="alert"
+      >
+        {{ message }}
+      </div>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="mobile-title">
+      <h2>Sign Up</h2>
+    </div>
+    <form class="login-form" method="post">
+      {% csrf_token %}
+      <div class="form-control d-none">
+        {{ register.username }}
+        <span class="text-danger"
+          >{{ register.username.errors | striptags }}</span
+        >
+        <i class="fas fa-user user-icon"></i>
+      </div>
+      <div class="form-group form-control">
+        {{ register.email }}
+        <span class="text-danger">{{ register.email.errors | striptags }}</span>
+        <i class="fas fa-user user-icon"></i>
+      </div>
+      <div class="form-control">
+        {{ register.first_name }}
+        <span class="text-danger"
+          >{{ register.first_name.errors | striptags }}</span
+        >
+
+        <i class="fas fa-user user-icon"></i>
+      </div>
+      <div class="form-control">
+        {{ register.last_name }}
+        <span class="text-danger"
+          >{{ register.last_name.errors | striptags }}</span
+        >
+        <i class="fas fa-user user-icon"></i>
+      </div>
+      <div class="form-control">
+        {{ register.password1 }}
+        <span class="text-danger"
+          >{{ register.password1.errors | striptags }}</span
+        >
+        <i class="fas fa-lock lock-icon"></i>
+        <i class="ri-eye-off-line login__eye eye-icon" id="input-icon"></i>
+      </div>
+      <div class="form-control">
+        {{ register.password2 }}
+        <span class="text-danger"
+          >{{ register.password2.errors | striptags }}</span
+        >
+        <i class="fas fa-lock lock-icon"></i>
+      </div>
+      <button class="submit">Register</button>
+    </form>
+    <div>Already have an account? <a href="{% url 'login' %}">Sign In</a></div>
+  </div>
+</section>
+
+<script src="{% static 'authentication/js/script.js' %}"></script>
+
+<script type="text/javascript">
+  const showHiddenPass = (inputPass, inputIcon) => {
+    const input = document.getElementById(inputPass),
+      iconEye = document.getElementById(inputIcon);
+    iconEye.addEventListener("click", () => {
+      //  Change pass to text
+      if (input.type == "password") {
+        // to text
+        input.type = "text";
+        // change icon
+        iconEye.classList.add("ri-eye-line");
+        iconEye.classList.remove("ri-eye-off-line");
+      } else {
+        // to pass
+        input.type = "password";
+        iconEye.classList.remove("ri-eye-line");
+        iconEye.classList.add("ri-eye-off-line");
+      }
+    });
+  };
+
+  showHiddenPass("id_password1", "input-icon");
+  showHiddenPass("id_password2", "input-icon");
+</script>
+
+{% endblock bodycontent %}

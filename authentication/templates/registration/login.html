@@ -1,0 +1,124 @@
+{% block styleContent %} {% load static %}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+/>
+<link rel="stylesheet" href="{% static 'authentication/css/auth.css' %}" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+  rel="stylesheet"
+/>
+{% endblock styleContent %} {% block bodycontent %} 
+{% if not request.user.is_authenticated %}
+<div class="mobile">
+  <h1 class="title cont-title">Welcome to bridge</h1>
+</div>
+
+<section
+  class="side"
+  style="
+    background: url({%static 'authentication/img/bk.png'%}) no-repeat;
+    background-size: 100% 102%;
+  "
+>
+  <div class="login-container">
+    <p class="title cont-title">Welcome to bridge</p>
+
+    <h2 style="color: aliceblue">Bridging the communication gap, one conversation at a time.</h2>
+    <h3>
+      <p
+        href=""
+        class="typewrite"
+        data-period="2000"
+        data-type='["Bridging the communication gap, one conversation at a time.", "Connecting people through technology and innovation.", "Helping you see beyond the words."]'
+      >
+        <span class="wrap"></span>
+      </p>
+    </h3>
+  </div>
+</section>
+
+<section class="main">
+  <div class="login-container">
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <div class="alert alert-{{message.tags}}" role="alert">{{ message }}</div>
+      {% endfor %}
+    </ul>
+    {% endif %} {% if form.non_field_errors %}
+    <ul class="messages">
+      {% for error in form.non_field_errors %}
+      <div class="alert alert-danger" role="alert">
+        {{ error }} Also please check whether you are verified or not.
+      </div>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="mobile-title">
+      <h2>Log In</h2>
+    </div>
+    <form class="login-form" method="post">
+      {% csrf_token %}
+      <div class="form-control">
+        {{ form.username }}
+        <i class="fas fa-user user-icon"></i>
+      </div>
+      <div class="form-control">
+        {{ form.password }}
+        <i class="fas fa-lock lock-icon"></i>
+        <i class="ri-eye-off-line login__eye eye-icon" id="input-icon"></i>
+      </div>
+      <a class="forgot_password" href="{% url 'password_reset' %}"
+        >Forgot Password?</a
+      >
+      <button class="submit" type="submit">Login</button>
+    </form>
+    <div class="my-3">
+      <a
+        class="btn btn-outline-info rounded-pill px-lg-5 mb-3 px-3"
+        href="{% url 'register' %}"
+        >Create an account</a
+      >
+    </div>
+  </div>
+</section>
+
+<script>
+  const id_username = document.getElementById("id_username");
+  const id_password = document.getElementById("id_password");
+
+  id_username.setAttribute("placeholder", "Email");
+  id_password.setAttribute("placeholder", "Password");
+  const showHiddenPass = (inputPass, inputIcon) => {
+    const input = document.getElementById(inputPass),
+      iconEye = document.getElementById(inputIcon);
+    iconEye.addEventListener("click", () => {
+      if (input.type == "password") {
+        input.type = "text";
+        iconEye.classList.add("ri-eye-line");
+        iconEye.classList.remove("ri-eye-off-line");
+      } else {
+        input.type = "password";
+        iconEye.classList.remove("ri-eye-line");
+        iconEye.classList.add("ri-eye-off-line");
+      }
+    });
+  };
+
+  showHiddenPass("id_password", "input-icon");
+</script>
+
+{% else %}
+<script>
+  window.location.href = "/bridge/";
+</script>
+{% endif %}
+<script src="{% static 'authentication/js/script.js' %}"></script>
+
+{% endblock bodycontent %}

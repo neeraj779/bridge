@@ -1,0 +1,189 @@
+{% extends 'bridge/base.html' %} {% block title %}
+<title>Preview | Bridge</title>
+{% endblock title %} {% block bodycontent %}
+<style>
+  .container {
+    max-width: 1400px;
+  }
+
+  .table-responsive::-webkit-scrollbar {
+    scrollbar-width: thin;
+    overflow-y: hidden;
+  }
+
+  .table-responsive::-webkit-scrollbar-track {
+    background-color: #ececec;
+    border-radius: 2px;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb {
+    background-color: rgba(119, 119, 119, 0.3);
+    border-radius: 2px;
+  }
+
+  .max_char {
+    max-width: 197px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .max_char:hover {
+    overflow: visible;
+    white-space: normal;
+    max-width: 100%;
+  }
+
+  .button_style {
+    text-align: center;
+    font-family: "Roboto Slab", serif;
+    margin-top: 10%;
+  }
+
+  .button_style a {
+    color: white;
+    background-color: #25aae1;
+    padding: 5px 11px;
+    border-style: 2px solid;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
+  }
+
+  .info {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding: 15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    color: #00529b;
+    background-color: #bde5f8;
+    background-image: url("https://i.imgur.com/ilgqWuX.png");
+  }
+
+  /* Waviy title */
+  .heading {
+    text-align: center;
+    font-weight: 600;
+    margin: 10px 0px;
+    color: #888888;
+    font-size: 30px;
+    transition: all 0.5s;
+}
+
+.overlay_title {
+    font-size: 1.875rem;
+    line-height: 2.75rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+  
+.text-gradient {  
+    background: rgb(123,6,249);
+    background: linear-gradient(90deg, rgba(123,6,249,1) 32%, rgba(223,18,162,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+  }
+
+  .waviy span {
+    display: inline-block;
+    animation: waviy 1.5s;
+    animation-delay: calc(.1s * var(--i))
+}
+
+@keyframes waviy {
+    0%,40%,100% {
+      transform: translateY(0)
+    }
+    20% {
+      transform: translateY(-20px)
+    }
+  }
+</style>
+<section>
+  <div class="container">
+    {% if myBooks %}
+
+    <div class="container">
+      <p class="heading text-center text-gradient overlay_title waviy">
+        <span class= "text-gradient" style="--i:1">Preview</span>
+      </p>
+    </div>
+    {% if messages %} {% for msg in messages %}
+    <div
+      class="alert alert-primary alert-dismissible fade show info"
+      role="alert"
+    >
+      {{msg}}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    {% endfor %} {% endif %}
+    <div
+      class="table-responsive"
+      style="
+        border-collapse: collapse;
+        margin: 27px 0;
+        font-size: 0.8em;
+        font-family: sans-serif;
+        border-radius: 12px 12px 0 0;
+        overflow: scroll;
+        border-bottom: thin;
+        white-space: nowrap;
+        scrollbar-width: thin;
+        overflow-y: hidden;
+      "
+    >
+      <table class="table table-striped table-borderless" id="previewTable">
+        <thead>
+          <tr class="text-center text-white" style="background: #6c7ae0">
+            <th rowspan="1">Sr. No</th>
+            <th>File Name</th>
+            <th>Creation Time</th>
+            <th>Document Name</th>
+            <th>No of Pages</th>
+            <th>Notes</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+
+        {% for x in myBooks %}
+        <tr style="text-align: center">
+          <td class="text-center">{{ forloop.counter }}</td>
+          <td class="max_char">{{ x.file }}</td>
+          <td>{{ x.dateTime }}</td>
+          <td class="max_char">{{ x.fileName }}</td>
+          <td>{{ x.noOfPages }}</td>
+          <td>{{ x.notes }}</td>
+          <td class="button_style">
+            <a
+              style="text-decoration: none"
+              href="{% url 'download_file' x.file %}"
+            >
+              Download Zip
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <span class="text-center text-danger"
+          >{{ "No Preview Available! No repository created with this
+          username"}}</span
+        >
+        {% endfor %}
+      </table>
+    </div>
+    {% endif %} {% if not myBooks %}
+    <div class="alert alert-primary" role="alert">
+      Uh-Oh! Seems that you have not Uploaded any Files yet. Try to Upload
+     files from <a href="{% url 'uploadfile' %}" class="alert-link"> Here </a>.
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock bodycontent %}

@@ -1,0 +1,507 @@
+{% extends 'bridge/base.html' %} {% block title %}
+<title>Associate | bridge</title>
+{% endblock title %} {% block styleContent %}
+<style>
+  .table-responsive::-webkit-scrollbar {
+    scrollbar-width: thin;
+    overflow-y: hidden;
+  }
+
+  .table-responsive::-webkit-scrollbar-track {
+    background-color: #ececec;
+    border-radius: 2px;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb {
+    background-color: rgba(119, 119, 119, 0.3);
+    border-radius: 2px;
+  }
+
+  .max_char {
+    max-width: 197px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .max_char:hover {
+    overflow: visible;
+    white-space: normal;
+    max-width: 100%;
+  }
+
+  .dropbtn {
+    background-color: #4caf50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+  }
+
+  .display-table {
+    display: none;
+  }
+
+  .style_remove {
+    color: white;
+    background-color: #25aae1;
+    text-decoration: none;
+    padding: 5px 11px;
+    border-style: 2px solid;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, #ff6eab, #ec0000);
+  }
+
+  .customDropdown{
+    border-radius: 1.625rem;
+    font-size: 1rem;
+    height: 2.8rem;
+    cursor: pointer;
+  }
+
+  .customInput{
+    border-radius: 1.625rem;
+    font-size: 1rem;
+    height: 2.8rem;
+    cursor: pointer;
+    
+  }
+
+  .card_associate {
+    padding: 1.5rem;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    background: rgb(194,251,215);
+    background: linear-gradient(90deg, rgba(194,251,215,1) 0%, rgba(194,251,215,1) 0%);
+    box-shadow: rgba(0, 0, 0, .1) 0 1px 2px 0;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+  }
+
+  .associate-btn {
+    width: 130px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+     7px 7px 20px 0px rgba(0,0,0,.1),
+     4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+  }
+
+  .btn-animate {
+    background: rgb(96,9,240);
+    background: linear-gradient(0deg, rgba(96,9,240,1) 0%, rgba(129,5,240,1) 100%);
+    border: none;
+    
+  }
+
+  .btn-animate:before {
+    height: 0%;
+    width: 2px;
+  }
+
+  .btn-animate:hover {
+    box-shadow: 4px 4px 6px 0 rgba(255,255,255,.5),
+      -4px -4px 6px 0 rgba(116, 125, 136, .5), 
+      inset -4px -4px 6px 0 rgba(255,255,255,.2),
+      inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+  }
+
+  /* Waviy title */
+  .heading {
+    text-align: center;
+    font-weight: 600;
+    margin: 10px 0px;
+    color: #888888;
+    font-size: 30px;
+    transition: all 0.5s;
+}
+
+.overlay_title {
+    font-size: 1.875rem;
+    line-height: 2.75rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+  
+.text-gradient {  
+    background: rgb(123,6,249);
+    background: linear-gradient(90deg, rgba(123,6,249,1) 32%, rgba(223,18,162,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+  }
+
+  .waviy span {
+    display: inline-block;
+    animation: waviy 1.5s;
+    animation-delay: calc(.1s * var(--i))
+}
+
+  .right-gap {
+    margin-right: 3em;
+  }
+
+@keyframes waviy {
+    0%,40%,100% {
+      transform: translateY(0)
+    }
+    20% {
+      transform: translateY(-20px)
+    }
+  }
+</style>
+{% endblock styleContent %} {% block bodycontent %}
+<main>
+  <div class="container">
+    <p class="heading text-center text-gradient overlay_title waviy">
+      <span class= "text-gradient" style="--i:1">Add</span>
+      <span class= "text-gradient" style="--i:2">/</span>
+      <span class= "text-gradient" style="--i:3">Remove</span>
+      <span class= "text-gradient" style="--i:3">Associate</span>
+    </p>
+  </div>
+</main>
+
+<section class="my-3 mb-5">
+  <div class="my-2">
+    <div class="container">
+      <div class="alert card_associate" role="alert">
+        <span style=" font-size: 28px;">Instructions:</span>
+        <ol id="instructions">
+          <li>Choose one of the Document listed below.</li>
+          <li>Fill email-id field of the user to be added as a Associate.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h6 class="text-center text-danger mb-4" id="message"></h6>
+
+<section class="my-3 mb-5">
+  {% for message in messages %}
+      {% if message.tags == 'success' %}
+      <!-- sweetalert js -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        const message = "{{ message }}";
+        Swal.fire(
+          'Success!',
+          message,
+          'success'
+        )
+      </script>
+    {% elif messages.tags == "info" %}
+    <!-- sweetalert js -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        const message = "{{ message }}";
+        Swal.fire({
+          icon: 'info',
+          title: 'Oops...',
+          text: message,
+        })
+      </script>
+    {% else %}
+    <!-- sweetalert js -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        const message = "{{ message }}";
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: message,
+        })
+      </script>
+    {% endif %}
+  {% endfor %}
+  <div
+    class="container"
+    style="background: rgba(255, 255, 255, 0.375); box-shadow: 0 0.75rem 2rem 0 rgba(0, 0, 0, 0.1); border-radius: 2rem; border: 1px solid rgba(255, 255, 255, 0.125);"
+  >
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="row py-2">
+        <div class="col-lg-6 my-2 my-lg-0 pt-4 p-4">
+          <label class="form-label">
+            <strong>Select Document</strong>
+          </label>
+          <select id="" class="form-select customDropdown" name="select_repo">
+            {% for repo in repositories %}
+            <option value="{{ repo.fileName }}" selected>
+              {{ repo.fileName }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-lg-6 mb-2 mb-lg-0 pt-4 p-4">
+          <label class="form-label">
+            <strong>Associate&#39;s Email-id</strong>
+          </label>
+          <input
+            id="email_id"
+            class="form-control customInput"
+            type="text"
+            name="collaborator"
+            placeholder="Email-Id"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="text-center pb-4 pt-4">
+        <button type="submit" id="submit" class="btn associate-btn  btn-animate">
+          Add
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="my-3 mb-5">
+  <div class="container">
+    {% if message1 != "" %}
+    <div class="alert alert-primary" role="alert">
+      {{ message1 }}
+      <a href="{% url 'bridge-home' %}" class="alert-link"> Return to Home Screen </a>
+    </div>
+    {% endif %}
+
+    <div class="container">
+      {% if repositories_associates %}
+      <div class="col-sm-3 my-2 my-lg-0" style="padding-bottom: 0.5em">
+        <select
+          id="visible-table"
+          class="form-select"
+          onchange="showTable();"
+          name="show_repo"
+        >
+          {% for repo in repositories_associates %}
+          <option value="{{ repo.id }}">{{ repo.fileName }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %} 
+
+      {% for repo in repositories_associates %} 
+      {% if forloop.counter == 1 %}
+      <div
+        class="repo_table table-responsive"
+        id="{{ repo.id }}"
+        style="
+          border-collapse: collapse;
+          margin: 27px 0;
+          font-size: 0.8em;
+          font-family: sans-serif;
+          border-radius: 12px 12px 0 0;
+          overflow: scroll;
+          border-bottom: thin;
+          white-space: nowrap;
+          scrollbar-width: thin;
+          overflow-y: hidden;
+        "
+      >
+          <table class="table table-striped table-borderless" id="previewTable">
+            <thead>
+              <tr class="text-center text-white" style="background: #6c7ae0">
+                <th>Sr. No.</th>
+                <th>Email Id</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for collaborator in repo.user.all %}
+              {% if request.user != collaborator %}
+              <tr>
+                <th class="text-center" scope="row">
+                  {{ forloop.counter|add:"-1" }}
+                </th>
+                <td class="text-center max_char">{{ collaborator.email }}</td>
+                <form
+                  id="{{ collaborator.email }}-{{ repo.fileName }}"
+                  method="post"
+                  action="{% url 'removeassociates' %}"
+                >
+                  {% csrf_token %}
+                  <input
+                    type="hidden"
+                    name="documentName"
+                    value="{{ repo.fileName }}"
+                  />
+                  <input
+                    type="hidden"
+                    name="collaborator_id"
+                    value="{{ collaborator.id }}"
+                  />
+                  <td class="text-center">
+                    <a
+                      href="javascript:{}"
+                      onclick="confirmRemove('{{ collaborator.email }}-{{ repo.fileName }}')";
+                      class="style_remove"
+                      >Remove</a
+                    >
+                  </td>
+                </form>
+              </tr>
+              {% endif %} {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="d-none repo_table table-responsive" id="{{ repo.id }}"  style="
+        border-collapse: collapse;
+        margin: 27px 0;
+        font-size: 0.8em;
+        font-family: sans-serif;
+        border-radius: 12px 12px 0 0;
+        overflow: scroll;
+        border-bottom: thin;
+        white-space: nowrap;
+        scrollbar-width: thin;
+        overflow-y: hidden;
+      ">
+          <table class="table table-striped table-borderless" id="previewTable">
+            <thead>
+              <tr class="text-center text-white" style="background: #6c7ae0">
+                <th>Sr. No.</th>
+                <th>Email Id</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for collaborator in repo.user.all %} {% if request.user != collaborator %}
+              <tr>
+                <th class="text-center" scope="row">
+                  {{ forloop.counter|add:"-1" }}
+                </th>
+                <td class="text-center max_char">{{ collaborator.email }}</td>
+                <form
+                  id="{{ collaborator.email }}-{{ repo.fileName }}"
+                  method="post"
+                  action="{% url 'removeassociates' %}"
+                >
+                  {% csrf_token %}
+                  <input
+                    type="hidden"
+                    name="documentName"
+                    value="{{ repo.fileName }}"
+                  />
+                  <input
+                    type="hidden"
+                    name="collaborator_id"
+                    value="{{ collaborator.id }}"
+                  />
+                  <td class="text-center">
+                    <a
+                      href="javascript:{}"
+                      onclick="confirmRemove('{{ collaborator.email }}-{{ repo.fileName }}')";
+                      class="style_remove"
+                      >Remove</a
+                    >
+                  </td>
+                </form>
+              </tr>
+              {% endif %} {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %} {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+  const showTable = () => {
+    const repoId = document.getElementById("visible-table").value;
+    const repoTables = document.getElementsByClassName("repo_table");
+    Array.from(repoTables).forEach((repo) => {
+      if (parseInt(repo.id) == repoId) repo.classList.remove("d-none");
+      else repo.classList.add("d-none");
+    });
+  };
+
+  function confirmRemove(form_id) {
+    
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger right-gap",
+
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "Are you sure you want to remove this associate?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          document.getElementById(form_id).submit();
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Associate has not been removed",
+            "error"
+          );
+        }
+      });
+  }
+</script>
+{% endblock bodycontent %}

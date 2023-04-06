@@ -21,6 +21,6 @@ urlpatterns = [
     path('bridge/admin/', admin.site.urls),
     path('', views.landingPage, name='landingPage'),
     path('bridge/', include('bridge.urls')),
-    # path('bridge/auth/', include('authentication.urls')),
+    path('bridge/auth/', include('authentication.urls')),
     path('bridge/accounts/', include("django.contrib.auth.urls")),
 ]

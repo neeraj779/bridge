@@ -1,0 +1,336 @@
+{% extends 'bridge/base.html' %} {% block title %}
+<title>Preview | Bridge</title>
+{% endblock title %} {% block bodycontent %}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap");
+
+  /* CSS reset */
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  html,
+  body {
+    /* height: 100%; */
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  /* general styling */
+
+  :root {
+    /* Primary */
+
+    --Red: hsl(0, 78%, 62%);
+    --Cyan: hsl(180, 62%, 55%);
+    --Orange: hsl(34, 97%, 64%);
+    --Blue: hsl(212, 86%, 64%);
+
+    /* Neutral */
+
+    --Very-Dark-Blue: hsl(234, 12%, 34%);
+    --Grayish-Blue: hsl(229, 6%, 66%);
+    --Very-Light-Gray: hsl(0, 0%, 98%);
+  }
+
+  body {
+    font-family: "Poppins", sans-serif;
+    font-size: 0.9rem;
+    color: var(--Very-Dark-Blue);
+    background-color: var(--Very-Light-Gray);
+  }
+
+  section {
+    max-width: 25rem;
+    margin-top: 4rem;
+  }
+
+  .feature {
+    padding-left: 30px;
+    position: relative;
+    max-width: 21rem;
+    height: 15rem;
+    margin: 2rem auto;
+    padding: 2em;
+    border-radius: 0.75em;
+    box-shadow: 5px 5px 20px rgba(0 0 0/0.15);
+    text-align: left;
+    transition: transform 200ms ease-in;
+  }
+
+  .feature:hover {
+    transform: scale(1.03);
+  }
+
+  .feature__desc {
+    margin-top: 0.5em;
+    color: var(--Grayish-Blue);
+  }
+
+  .feature__img {
+    position: absolute;
+    bottom: 10%;
+    right: 10%;
+  }
+
+  /* separate styling */
+
+  .section__title {
+    margin: 0 auto;
+    max-width: 90%;
+    font-size: 1.65rem;
+    font-weight: 300;
+    line-height: 1.5em;
+    text-align: center;
+  }
+
+  .section__title span {
+    font-weight: 700;
+  }
+
+  .section__desc {
+    max-width: 32ch;
+    margin: 1rem auto 3rem;
+    color: var(--Grayish-Blue);
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .feature-one {
+    border-top: 5px solid var(--Cyan);
+  }
+
+  .feature-two {
+    border-top: 5px solid var(--Red);
+  }
+
+  .feature-three {
+    border-top: 5px solid var(--Orange);
+  }
+
+  .feature-four {
+    border-top: 5px solid var(--Blue);
+  }
+
+  /* attribution styling */
+
+  footer {
+    position: absolute;
+    top: 0;
+  }
+
+  .attribution {
+    color: var(--Very-Dark-Blue);
+    opacity: 0.7;
+  }
+
+  .attribution a {
+    color: var(--Blue);
+    text-decoration: underline;
+  }
+
+  .attribution a:hover {
+    color: var(--Cyan);
+  }
+
+  /* media queries */
+
+  @media (min-width: 1000px) {
+    body {
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    section {
+      max-width: 200rem;
+    }
+
+    .section__title {
+      margin: 0 auto;
+      max-width: 40%;
+      font-size: 2rem;
+    }
+
+    .section__desc {
+      max-width: 55ch;
+      margin: 1rem auto 1rem;
+    }
+
+    .features {
+      padding-left: 100px;
+
+      display: flex;
+      gap: 2rem;
+    }
+
+    .feature-one {
+      margin: auto 0;
+    }
+
+    .feature-four {
+      margin: auto 0;
+    }
+  }
+  .cta {
+    position: relative;
+    margin: auto;
+    padding: 12px 18px;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+  }
+
+  .cta:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 50px;
+    background: #b1dae7;
+    width: 45px;
+    height: 45px;
+    transition: all 0.3s ease;
+  }
+
+  .cta span {
+    position: relative;
+    font-family: "Ubuntu", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #234567;
+  }
+
+  .cta:hover:before {
+    width: 100%;
+    background: #b1dae7;
+  }
+
+  .cta:hover svg {
+    transform: translateX(0);
+  }
+
+  .cta:active {
+    transform: scale(0.95);
+  }
+</style>
+<main>
+  <section class="">
+    <h1 class="section__title">
+      Bridge
+      <span>Breaking Barriers to Communication.</span>
+    </h1>
+    <p class="section__desc">
+      Welcome to Bridge, the platform that enables effective and inclusive
+      communication between individuals with visual impairments and
+      administrators/teachers.
+    </p>
+
+    <div class="features">
+      <div class="feature feature-one">
+        <h2 class="feature__title">Text to Speech</h2>
+        <p class="feature__desc">
+          Converts text to speech, allowing for easy communication between
+          individuals with visual impairments and administrators/teachers.
+        </p>
+        <img
+          class="feature__img"
+          src="https://kellychi22.github.io/frontend-mentor-solutions/10-four-card-feature-section/images/icon-supervisor.svg"
+          alt=""
+        />
+        <a style="text-decoration: none" href="{% url 'tts' %}">
+          <button class="cta">
+            <span>Get Started</span>
+          </button>
+        </a>
+      </div>
+      <div class="wrapper">
+        <div class="feature feature-two">
+          <h2 class="feature__title">Speech to Text</h2>
+          <p class="feature__desc">
+            Converts speech to text, allowing for easy communication between
+            individuals with visual impairments and administrators/teachers.
+          </p>
+          <img
+            class="feature__img"
+            src="https://kellychi22.github.io/frontend-mentor-solutions/10-four-card-feature-section/images/icon-team-builder.svg"
+            alt=""
+          />
+          <a style="text-decoration: none" href="{% url 'stt' %}">
+            <button class="cta">
+              <span>Get Started</span>
+            </button>
+          </a>
+        </div>
+        <div class="feature feature-three">
+          <h2 class="feature__title">Pdf Reader</h2>
+          <p class="feature__desc">
+           Read pdf files with ease, allowing for easy communication between
+            individuals with visual impairments and administrators/teachers.
+          </p>
+          <img
+            class="feature__img"
+            src="https://kellychi22.github.io/frontend-mentor-solutions/10-four-card-feature-section/images/icon-karma.svg"
+            alt=""
+          />
+          <a style="text-decoration: none" href="{% url 'pts' %}">
+            <button class="cta">
+              <span>Get Started</span>
+            </button>
+          </a>
+        </div>
+      </div>
+      <div class="feature feature-four">
+        <h2 class="feature__title">Audio to text</h2>
+        <p class="feature__desc">
+          Converts audio to text, allowing for easy communication between
+          individuals with visual impairments and administrators/teachers.
+        </p>
+        <img
+          class="feature__img"
+          src="https://kellychi22.github.io/frontend-mentor-solutions/10-four-card-feature-section/images/icon-calculator.svg"
+          alt=""
+        />
+        <a style="text-decoration: none" href="{% url 'tts' %}">
+          <button class="cta">
+            <span>Get Started</span>
+          </button>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+{% endblock bodycontent %}

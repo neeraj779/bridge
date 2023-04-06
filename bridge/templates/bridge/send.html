@@ -1,0 +1,375 @@
+{% extends 'bridge/base.html' %} {% load static %} {% block title %}
+<title>Home | File Verge</title>
+{% endblock title %} {% block bodycontent %}
+<main class="my-5">
+  <div class="container my-5">
+    <h1 class="overlay_title text-center">
+      <span class="text-gradient">Bridge </span>
+       Assignments Submission Portal 
+    </h1>
+    <h2 class="text-center text-primary"><i></i></h2>
+  </div>
+</main>
+
+<section class="my-5">
+  <div class="my-2">
+   
+  <div class="container p-3">
+    <div class="text-center warning-msg d-none" id="message"></div>
+    <div id="progress_div" class="form-group mt-4 d-none">
+      <div class="progress">
+        <div
+          id="progress_bar"
+          class="progress-bar progress-bar-striped"
+          role="progressbar"
+          style="border-radius: 1rem; width: 100%"
+          aria-valuenow="10"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+    </div>
+    <div
+      id="progress-bar-message"
+      class="alert alert-success text-center my-2 d-none"
+      style="border-radius: 1rem"
+      role="alert"
+    ></div>
+    <br />
+    <div
+      class="text-white"
+      style="background: rgba(255, 255, 255, 0.375); box-shadow: 0 0.75rem 2rem 0 rgba(0, 0, 0, 0.1); border-radius: 2rem; border: 1px solid rgba(255, 255, 255, 0.125); }"
+    >
+      <div class="row">
+        <div class="col-md-3 p-3" id="div1">
+          <hr />
+          <form
+            id="upload-form"
+            class="m-3"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            {% csrf_token %}
+            <label class="form-label text-black"
+              ><strong>Upload a File</strong></label
+            >
+            <input
+              class="form-control"
+              style="border-radius: 12px"
+              type="file"
+              id="document"
+              name="document"
+              accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, image/jpeg"
+              required
+            />
+            <div id="upload-btn" class="text-center my-2">
+              <button
+                class="btn btn-animation-2 convert-btn w-100"
+                style="border-radius: 1rem"
+                type="submit"
+              >
+                Upload
+              </button>
+            </div>
+          </form>
+          {% if file is not None %}
+          <div class="text-success text-center">{{file}}</div>
+          {% endif %}
+        </div>
+        <div class="col-md-3 p-3">
+          <hr />
+          <form class="m-3">
+            {% csrf_token %}
+          <label class="form-label text-black"
+            ><strong>Enter Document Name</strong></label
+          >
+          <input
+            id="doc_name"
+            class="form-control customInput"
+            type="text"
+            placeholder="Document Name"
+          />
+
+          
+          </form>
+        </div>
+        <div class="col-md-3 p-3">
+          <hr />
+          <label class="form-label text-black"
+            ><strong>Enter Notes</strong></label
+          >
+          <input
+            id="model"
+            class="form-control customInput"
+            type="text"
+            placeholder="Enter Notes"
+          />
+        </div>
+        <hr />
+        <div class="col-md-3 p-3" id="div4">
+          <hr />
+          <div
+            onclick="toggleDropdown()"
+            id="checkbox_sets"
+            class="form-check form-switch"
+          >
+            <label class="form-label text-black"
+              ><strong>No of Pages</strong></label
+            >
+            <input class="form-check-input" type="checkbox" id="auto_sets" />
+          </div>
+
+          <input
+            id="no_of_pages"
+            class="form-control customInput d-none"
+            type="text"
+            placeholder="Enter no of Pages"
+          />
+
+          <div id="noteTextSets" class="text-black">
+            <i style="color: blue" class="fa fa-info-circle"></i> Note: This
+            step is optional. If you prefer, you can skip this step and proceed
+            to the next one.
+          </div>
+        </div>
+        <div class="col-md-3 p-3 d-none">
+          <h4 class="fs-3 text-center text-black">GitHub Username</h4>
+          <hr />
+          <input
+            id="git_username"
+            class="form-control"
+            type="text"
+            placeholder="Collaborator&#39;s GitHub Username"
+          />
+        </div>
+        <div class="col-md-3 p-3">
+          <hr />
+          <div>
+            <label class="form-label text-black text-center"
+              ><strong>Submit</strong></label
+            >
+            <button
+              class="btn btn-animation convert-btn w-100 d-none"
+              id="btnFetch"
+              name="convert"
+              type="submit"
+            >
+              <i class="fa fa-cogs"> </i> Submit
+            </button>
+            <div id="noteTextConvert" class="text-black">
+              <i style="color: blue" class="fa fa-info-circle"> </i> Note: After
+              you upload your file, a button will appear allowing you to Submit
+              the file.
+            </div>
+          </div>
+        </div>
+        <hr />
+      </div>
+    </div>
+  </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    const checkboxSets = document.getElementById("auto_sets");
+    document.getElementById("git_username").value = "neeraj779";
+    const csrf_token = `{{ csrf_token }}`;
+    let file;
+
+    $("#btnFetch").click(async function (event) {
+      event.preventDefault();
+
+      const message = document.getElementById("message");
+
+      progress_div.classList.add("d-none");
+
+      const modal = () => {
+        $(this).html("Convert");
+        Swal.fire({
+          title: "Done!",
+          icon: "success",
+          text: "Your document has been added to the database. you will receive an email notification with a details of your document. Thank you for using bridge!",
+          confirmButtonAriaLabel: "Thumbs up, great!",
+          showClass: {
+            popup: "animate__animated animate__zoomInUp",
+          },
+          hideClass: {
+            popup: "animate__animated animate__zoomOutDown",
+          },
+        }).then(() => {
+          location.reload();
+        });
+      };
+
+      const is_repo = async (doc_name) => {
+        const res = await fetch(`/bridge/check_doc/${doc_name}/`);
+        const result = await res.json();
+        if (result.status == true) return true;
+        else return false;
+      };
+
+      const process = document.getElementById("progress-bar-message");
+      const doc_name = document.getElementById("doc_name").value;
+      const github_username = document.getElementById("git_username").value;
+      const notes = document.getElementById("model").value;
+
+      if (doc_name.length == 0 && github_username.length == 0) {
+        message.innerHTML = "Please Enter Document Name, & Github Username!";
+      } else if (doc_name.length == 0) {
+        message.innerHTML =
+          "<i class='fas fa-exclamation-triangle'> Please Enter Document Name!";
+        message.classList.remove("d-none");
+        window.scrollTo(0, 500);
+      } else if (await is_repo(doc_name)) {
+        message.innerHTML =
+          "<i class='fas fa-exclamation-triangle'> This Document Name Already Exists In The Database!";
+        message.classList.remove("d-none");
+        window.scrollTo(0, 500);
+      } else if (github_username.length == 0) {
+        message.innerHTML = "Please Enter GitHub Username!";
+      } else {
+        const preserve_layout = document.getElementById("preserve_layout");
+        let layout = false;
+
+        console.log(preserve_layout);
+
+        if (preserve_layout) layout = preserve_layout.checked;
+
+        let no_of_pages;
+        if (checkboxSets.checked)
+          no_of_pages = document.getElementById("no_of_pages").value;
+        else no_of_pages = 0;
+
+
+        // Add spinner to button
+        $(this).html(
+          `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+        );
+        $(this).prop("disabled", true);
+
+        // message.innerHTML = "Please Wait! Don't Close Your Window, It Will Take Few Minutes.";
+
+        process.classList.remove("alert-danger");
+        process.classList.add("alert-primary");
+
+        const csrf_token = `{{ csrf_token }}`;
+        const response = await fetch(
+          `/bridge/save_data/${doc_name}/${no_of_pages}/${github_username}/${notes}/${file}/`,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-type": "application/json; charset=UTF-8",
+              "X-CSRFToken": csrf_token,
+            },
+            body: `{}`,
+          }
+        );
+
+        const response_json = await response.json();
+        const error = response_json.error;
+        if (error) process.innerHTML = error;
+        else {
+          file = response_json.file;
+          modal();
+        }
+      }
+    });
+
+    $("#upload-form").submit(function (e) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      const documentName = document.getElementById("document").files[0];
+      formData.append("document", documentName);
+      file = documentName.name;
+
+      const result = document.getElementById("progress-bar-message");
+      if (file.includes(" ")) {
+        result.classList.remove("d-none");
+        result.classList.remove("alert-primary");
+        result.classList.add("alert-danger");
+        progress_div.classList.add("d-none");
+        result.innerHTML = "PDF name shouldn't contain any white space.";
+      } else {
+        result.classList.add("d-none");
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = "json";
+        xhr.open("POST", "/bridge/upload/", true);
+        xhr.setRequestHeader("X-CSRFToken", csrf_token);
+        let uploaded = "";
+        const progress_div = document.getElementById("progress_div");
+        const progress_bar = document.getElementById("progress_bar");
+        const preview = document.getElementById("preview");
+
+        const naiveRound = (num, decimalPlaces = 0) => {
+          const p = Math.pow(10, decimalPlaces);
+          return Math.round(num * p) / p;
+        };
+
+        xhr.upload.addEventListener("progress", (event) => {
+          if (event.lengthComputable) {
+            let percentage = ((event.loaded / event.total) * 100) | 0;
+            progress_div.classList.remove("d-none");
+            progress_bar.style["width"] = "" + percentage + "%";
+            progress_bar.innerHTML = "" + percentage + "%";
+            uploaded =
+              naiveRound(event.loaded / 1000000, 2) +
+              "/" +
+              naiveRound(event.total / 1000000, 2) +
+              " MB";
+          }
+        });
+        xhr.send(formData);
+
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            const btnFetch = document.getElementById("btnFetch");
+            const note = document.getElementById("noteTextConvert");
+            result.classList.remove("d-none");
+            result.classList.remove("alert-danger");
+            result.classList.add("alert-primary");
+            progress_div.classList.remove("d-none");
+            result.innerHTML = this.response.success + ": " + uploaded;
+            btnFetch.classList.remove("d-none");
+            note.classList.add("d-none");
+          }
+        };
+      }
+    });
+  });
+
+
+
+  function toggleDropdown() {
+    var dropdown = document.getElementById("no_of_pages");
+    var note = document.getElementById("noteTextSets");
+
+    if (document.getElementById("auto_sets").checked) {
+      dropdown.classList.remove("d-none");
+      note.classList.add("d-none");
+    } else {
+      dropdown.classList.add("d-none");
+      note.classList.remove("d-none");
+    }
+  }
+
+  // alert for layout
+  function toggleLayoutInfo() {
+    Swal.fire({
+      title: "Layout Preservation",
+      icon: "info",
+      text: "Layout preservation in OCR refers to the process of maintaining the original layout and formatting of a document during the OCR process. This means if you will enable this option we will try to recognize and preserve the original layout of the document, including text alignment, font size and style, and any cropped images or graphics that are present.",
+      showClass: {
+        popup: "animate__animated animate__zoomInUp",
+      },
+      hideClass: {
+        popup: "animate__animated animate__backOutDown",
+      },
+    });
+  }
+
+ 
+</script>
+{% endblock bodycontent %}

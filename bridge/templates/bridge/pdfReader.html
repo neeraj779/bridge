@@ -1,0 +1,154 @@
+{% extends 'bridge/base.html' %} {% block title %}
+<title>Pdf Reader | Bridge</title>
+{% endblock title %} {% block bodycontent %}
+
+<head>
+  <title>PDF Text Reader</title>
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+    integrity="sha384-Dpgbhqp/zV9X8q/i3rVtUnK1t10wT+T8Q2s6jmoRbHigSZ0tV8XzqTVgLweLrjzT"
+    crossorigin="anonymous"
+  />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.worker.min.js";
+  </script>
+</head>
+
+<body>
+  <div class="container my-5">
+    <h1 class="text-center mb-4">PDF Text Reader</h1>
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-6">
+        <input type="file" class="form-control" id="fileInput" accept=".pdf" />
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div id="output" class="p-3 border"></div>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-2">
+        <button id="playBtn" class="btn btn-primary w-100">Play</button>
+      </div>
+      <div class="col-md-2">
+        <button id="pauseBtn" class="btn btn-secondary w-100">Pause</button>
+      </div>
+      <div class="col-md-2">
+        <button id="resumeBtn" class="btn btn-secondary w-100">Resume</button>
+      </div>
+      <div class="col-md-2">
+        <button id="stopBtn" class="btn btn-danger w-100">Stop</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const outputDiv = document.getElementById("output");
+    const stopBtn = document.getElementById("stopBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+    const resumeBtn = document.getElementById("resumeBtn");
+    const playBtn = document.getElementById("playBtn");
+
+    let pdfDoc = null;
+    let pageNum = 1;
+    let isPaused = false;
+
+    fileInput.addEventListener("change", function () {
+      const file = this.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        const typedarray = new Uint8Array(this.result);
+        pdfjsLib
+          .getDocument(typedarray)
+          .promise.then(function (pdf) {
+            pdfDoc = pdf;
+            outputDiv.innerHTML = "";
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+              pdf
+                .getPage(i)
+                .then(function (page) {
+                  return page.getTextContent();
+                })
+                .then(function (pageText) {
+                  const text = pageText.items
+                    .map(function (item) {
+                      return item.str;
+                    })
+                    .join(" ");
+                  outputDiv.innerHTML += `<p class="page-${pageNum}">${text}</p>`;
+                  pageNum++;
+
+                  if (pageNum > pdfDoc.numPages) {
+                    playBtn.disabled = false;
+                  }
+                })
+                .catch(function (err) {
+                  console.error(err);
+                });
+            }
+          })
+          .catch(function (err) {
+            console.error(err);
+          });
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+
+    stopBtn.addEventListener("click", function () {
+      window.speechSynthesis.cancel();
+    });
+
+    pauseBtn.addEventListener("click", function () {
+      window.speechSynthesis.pause();
+      isPaused = true;
+    });
+
+    resumeBtn.addEventListener("click", function () {
+      window.speechSynthesis.resume();
+      isPaused = false;
+    });
+
+    playBtn.addEventListener("click", function () {
+      readText(outputDiv.innerHTML);
+    });
+
+    function readText(text) {
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      utterance.addEventListener("start", function () {
+        stopBtn.disabled = false;
+        pauseBtn.disabled = false;
+        resumeBtn.disabled = false;
+        playBtn.disabled = true;
+      });
+
+      utterance.addEventListener("pause", function () {
+        pauseBtn.disabled = true;
+        resumeBtn.disabled = false;
+      });
+
+      utterance.addEventListener("resume", function () {
+        pauseBtn.disabled = false;
+        resumeBtn.disabled = true;
+      });
+
+      utterance.addEventListener("end", function () {
+        stopBtn.disabled = true;
+        pauseBtn.disabled = true;
+        resumeBtn.disabled = true;
+        playBtn.disabled = false;
+      });
+
+      synth.speak(utterance);
+    }
+  </script>
+</body>
+{% endblock bodycontent %}

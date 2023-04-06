@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 
 class UserData(models.Model):
     file = models.CharField(max_length=200)
-    tool = models.CharField(max_length=200)
     fileName = models.CharField(max_length=200)
     dateTime = models.DateTimeField(default=timezone.now)
+    notes = models.TextField()
     noOfPages = models.CharField(max_length=5)
     user = models.ManyToManyField(User, related_name="fileInfosOfUser")
     fileOwner = models.ForeignKey(

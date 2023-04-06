@@ -1,0 +1,88 @@
+{% extends 'bridge/base.html' %} {% block title %}
+<title>Speech to Text | Bridge</title>
+{% endblock title %} {% block bodycontent %}
+<head>
+  <style>
+    body {
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      margin-top: 50px;
+      font-weight: bold;
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    #textbox {
+      border-radius: 10px;
+    }
+    #start-btn,
+    #stop-btn {
+      margin-top: 10px;
+      border-radius: 10px;
+    }
+    #start-btn:hover,
+    #stop-btn:hover {
+      opacity: 0.8;
+    }
+    #instructions {
+      margin-top: 20px;
+      text-align: center;
+      font-style: italic;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Speech to Text</h1>
+    <div class="form-group">
+      <textarea id="textbox" rows="6" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+      <button id="start-btn" class="btn btn-danger btn-block">Start</button>
+      <button id="stop-btn" class="btn btn-warning btn-block">Stop</button>
+      <p id="instructions">Press the Start button to begin transcription.</p>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+    var speechRecognition = window.webkitSpeechRecognition;
+    var recognition = new speechRecognition();
+    var textbox = $("#textbox");
+    var instructions = $("#instructions");
+    var content = "";
+    recognition.continuous = true;
+    recognition.onstart = function () {
+      instructions.text("Voice recognition is on.");
+    };
+    recognition.onspeechend = function () {
+      instructions.text("No activity.");
+    };
+    recognition.onerror = function () {
+      instructions.text("Try again.");
+    };
+    recognition.onresult = function (event) {
+      var current = event.resultIndex;
+      var transcript = event.results[current][0].transcript;
+      content += transcript;
+      textbox.val(content);
+    };
+    $("#start-btn").click(function (event) {
+      recognition.start();
+    });
+    $("#stop-btn").click(function (event) {
+      recognition.stop();
+      instructions.text("Voice recognition stopped.");
+      textbox.val(content);
+    });
+    textbox.on("input", function () {
+      content = $(this).val();
+    });
+  </script>
+</body>
+{% endblock bodycontent %}

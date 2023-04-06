@@ -114,8 +114,7 @@
           administrators/teachers.
         </h6>
         <div>
-          <button class="btn btn-opacity-light mr-1">Get started</button>
-          <button class="btn btn-opacity-success ml-1">Learn more</button>
+          <a href="{% url 'bridge-home' %}"><button class="btn btn-opacity-light mr-1">Get started</button></a>
         </div>
         <img src="{% static 'bridge/landingPage/img/Group171.svg' %}" alt="" class="img-fluid" />
       </div>
@@ -442,7 +441,7 @@
             </div>
           </div>
         </section>
-        <section class="contact-us" id="contact-section">
+        <section class="contact-us" id="contact-section" style="background-image: url('{% static 'bridge/landingPage/img/gdpr.jpg' %}')">
           <div class="contact-us-bgimage grid-margin">
             <div class="pb-4">
               <h4 class="px-3 px-md-0 m-0" data-aos="fade-down">
