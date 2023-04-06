@@ -19,13 +19,13 @@
       rel="stylesheet"
     />
     <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
 
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
@@ -38,14 +38,7 @@
   <body>
     <nav
       class="navbar navbar-dark navbar-expand-custom mb-2"
-      style="
-        background: rgb(35, 37, 38);
-        background: linear-gradient(
-          90deg,
-          rgba(35, 37, 38, 1) 35%,
-          rgba(65, 67, 69, 1) 100%
-        );
-      "
+      style="background: #11101d"
     >
       <div class="container-fluid">
         <a
@@ -67,42 +60,42 @@
               <a
                 class="nav-link {% if request.path == '/bridge/text-to-speech/' %} active {% endif %}"
                 href="{% url 'tts' %}"
-                ><i class="fa fa-history"></i> Text to Speech</a
+                ><i class="fas fa-keyboard "></i></i> Text to Speech</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link {% if request.path == '/bridge/speech-text-to/' %} active {% endif %}"
                 href="{% url 'stt' %}"
-                ><i class="fa fa-users"></i> Speech to Text</a
+                ><i class="fas fa-file-audio"></i>  Speech to Text</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link {% if request.path == '/bridge/pdf-reader/' %} active {% endif %}"
                 href="{% url 'pts' %}"
-                ><i class="fa fa-"></i> Pdf Reader</a
+                ><i class="fas fa-file-pdf"></i> Pdf Reader</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link {% if request.path == '/bridge/upload_file/' %} active {% endif %}"
                 href="{% url 'uploadFile' %}"
-                ><i class="fa fa-"></i> Upload Assignments</a
+                ><i class="fas fa-upload"></i> Upload</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link {% if request.path == '/bridge/preview/' %} active {% endif %}"
                 href="{% url 'preview' %}"
-                ><i class="fa fa-"></i> Preview</a
+                ><i class="fas fa-history"></i> Preview</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link {% if request.path == '/bridge/associates/' %} active {% endif %}"
                 href="{% url 'associates' %}"
-                ><i class="fa fa-"></i> Associates</a
+                ><i class="fas fa-user-plus"></i> Associates</a
               >
             </li>
             {% endif %}
